@@ -1,0 +1,1 @@
+# instagram_nickname_generator
