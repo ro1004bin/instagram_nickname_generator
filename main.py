@@ -4,7 +4,7 @@ def replace_random_chars(name, num_changes=3):
     if not name:
         return name
     
-    length = len(name)  
+    length = len(name)
     if length <= 1:
         return name
     
@@ -12,22 +12,32 @@ def replace_random_chars(name, num_changes=3):
     
     name_list = list(name)
     prev_char = ''
+    
     for index in indices:
-        new_char = random.choice(['x']) if prev_char == '.' else random.choice(['.', 'x'])  # prevent '..'
+        before_char = name_list[index - 1] if index > 0 else ''
+        after_char = name_list[index + 1] if index < length - 1 else ''
+        
+        if prev_char == '.' or before_char == '.' or after_char == '.':
+            new_char = 'x'
+        else:
+            new_char = random.choice(['.', 'x'])
+        
         name_list[index] = new_char
         prev_char = new_char
     
-    modified_name = ''.join(name_list)
-    return modified_name
+    return ''.join(name_list)
 
 name = input("Enter a name: ")
 
-# prevent same names
-modified_names = set()
+while True:
+    try:
+        number = int(input("Enter the amount you would like to generate\n(10 or more is recommended): "))
+        if number <= 0:
+            print("Please enter a positive integer.")
+            continue
+        break
+    except ValueError:
+        print("Invalid input. Please enter a valid number.")
 
-while len(modified_names) < 10:
-    modified_name = replace_random_chars(name)
-    modified_names.add(modified_name)
-
-for modified_name in modified_names:
-    print("Modified:", modified_name)
+for _ in range(number):
+    print("Modified:", replace_random_chars(name))
